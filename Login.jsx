@@ -3,12 +3,19 @@ import image from "../girl.gif"
 import team from "../team.gif"
 import team2 from "../team2.png"
 import { useState } from 'react';
+import{useNavigate}from 'react-router-dom';
 import logo from "../logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import{Client,Account} from 'appwrite';
 
 function Login() {
+  const navigate=useNavigate();
+  const[userData,setUserData]=useState({
+    email:"",
+    password:""
+  }
+  );
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   let client = new Client();
@@ -28,7 +35,7 @@ function Login() {
   ];
 
   const errors = {
-    uname: "invalid username",
+    email: "invalid email",
     pass: "invalid password"
   };
 
@@ -54,16 +61,16 @@ function Login() {
   //     setErrorMessages({ name: "uname", message: errors.uname });
   //   }
   // };
-  const handleSubmit=async(event)=>{
-    //event.preventDefault();
-    const email = document.getElementById('uname').value;
-    const password = document.getElementById('pass').value;
+  const login=async(event)=>{
+    event.preventDefault();
+
     try{
-     let promise=await accounts.createEmailSession(email,password);
-      console.log(promise)
+     let promise=await accounts.createEmailSession(userData.email,userData.password);
+     navigate("/profile")
+      console.log(promise);
       setIsSubmitted(true);
     }catch(err){
-      console.log(err)
+      console.log(err);
       setErrorMessages({ message:"Invalid Credentials" });
     }
   }
@@ -77,19 +84,29 @@ function Login() {
   // JSX code for login form
   const renderForm = (
     <div className="form">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={login}>
         <div className="input-container">
           <label>Username </label>
-          <input type="text" id="uname" name="uname" required />
-          {renderErrorMessage("uname")}
+          <input type="text" id="email" name="email" required onChange={(e)=>{
+            setUserData({
+              ...userData,
+              email:e.target.value
+            })
+          }}/>
+          {renderErrorMessage("email")}
         </div>
         <div className="input-container">
           <label>Password </label>
-          <input type="password"id="pass" name="pass" required />
+          <input type="password"id="pass" name="pass" required  onChange={(e)=>{
+            setUserData({
+              ...userData,
+              password:e.target.value
+            })
+          }}/>
           {renderErrorMessage("pass")}
         </div>
         <div className="button-container">
-          <input type="submit" />
+          <input type="submit"  />
         </div>
       </form>
     </div>
@@ -104,17 +121,26 @@ function Login() {
         <div className="login-form">
         <div className="title">Sign In</div>
         <div className="form">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={login}>
             <div className="input-container">
-            <label><FontAwesomeIcon icon={faUser}/>
-            <input className='input-type1' type="text" name="uname" placeholder='Username' required />
-             </label>
+            <label><FontAwesomeIcon icon={faUser}/></label>
+            <input type="text" id="email" name="email" required onChange={(e)=>{
+            setUserData({
+              ...userData,
+              email:e.target.value
+            })
+          }}/>
             
-            {renderErrorMessage("uname")}
+            {renderErrorMessage("email")}
             </div>
             <div className="input-container">
-            <label><FontAwesomeIcon icon={faLock}/> 
-            <input className='input-type1' type="password" name="pass" placeholder='password' required /></label>
+            <label><FontAwesomeIcon icon={faLock}/> </label>
+            <input type="password"id="pass" name="pass" required  onChange={(e)=>{
+            setUserData({
+              ...userData,
+              password:e.target.value
+            })
+          }}/>
            
             {renderErrorMessage("pass")}
             </div>
