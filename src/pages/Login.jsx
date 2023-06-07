@@ -6,10 +6,15 @@ import { useState } from 'react';
 import logo from "../logo.png"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import{Client,Account} from 'appwrite';
+
 function Login() {
   const [errorMessages, setErrorMessages] = useState({});
   const [isSubmitted, setIsSubmitted] = useState(false);
-
+  let client = new Client();
+  // let id = new sdk.ID(client);
+  let accounts=new Account(client)
+  client.setEndpoint('https://cloud.appwrite.io/v1') .setProject('6476c4a36c8cff9ced33');      
   // User Login info
   const database = [
     {
@@ -27,28 +32,41 @@ function Login() {
     pass: "invalid password"
   };
 
-  const handleSubmit = (event) => {
-    //Prevent page reload
-    event.preventDefault();
+  // const handleSubmit = (event) => {
+  //   //Prevent page reload
+  //   event.preventDefault();
 
-    var { uname, pass } = document.forms[0];
+  //   var { uname, pass } = document.forms[0];
 
-    // Find user login info
-    const userData = database.find((user) => user.username === uname.value);
+  //   // Find user login info
+  //   const userData = database.find((user) => user.username === uname.value);
 
-    // Compare user info
-    if (userData) {
-      if (userData.password !== pass.value) {
-        // Invalid password
-        setErrorMessages({ name: "pass", message: errors.pass });
-      } else {
-        setIsSubmitted(true);
-      }
-    } else {
-      // Username not found
-      setErrorMessages({ name: "uname", message: errors.uname });
+  //   // Compare user info
+  //   if (userData) {
+  //     if (userData.password !== pass.value) {
+  //       // Invalid password
+  //       setErrorMessages({ name: "pass", message: errors.pass });
+  //     } else {
+  //       setIsSubmitted(true);
+  //     }
+  //   } else {
+  //     // Username not found
+  //     setErrorMessages({ name: "uname", message: errors.uname });
+  //   }
+  // };
+  const handleSubmit=async(event)=>{
+    //event.preventDefault();
+    const email = document.getElementById('uname').value;
+    const password = document.getElementById('pass').value;
+    try{
+     let promise=await accounts.createEmailSession(email,password);
+      console.log(promise)
+      setIsSubmitted(true);
+    }catch(err){
+      console.log(err)
+      setErrorMessages({ message:"Invalid Credentials" });
     }
-  };
+  }
 
   // Generate JSX code for error message
   const renderErrorMessage = (name) =>
@@ -62,12 +80,12 @@ function Login() {
       <form onSubmit={handleSubmit}>
         <div className="input-container">
           <label>Username </label>
-          <input type="text" name="uname" required />
+          <input type="text" id="uname" name="uname" required />
           {renderErrorMessage("uname")}
         </div>
         <div className="input-container">
           <label>Password </label>
-          <input type="password" name="pass" required />
+          <input type="password"id="pass" name="pass" required />
           {renderErrorMessage("pass")}
         </div>
         <div className="button-container">
@@ -91,13 +109,13 @@ function Login() {
             <label><FontAwesomeIcon icon={faUser}/>
             <input className='input-type1' type="text" name="uname" placeholder='Username' required />
              </label>
-            
+
             {renderErrorMessage("uname")}
             </div>
             <div className="input-container">
             <label><FontAwesomeIcon icon={faLock}/> 
             <input className='input-type1' type="password" name="pass" placeholder='password' required /></label>
-           
+
             {renderErrorMessage("pass")}
             </div>
             <input type="checkbox"/> {" "}
@@ -109,7 +127,7 @@ function Login() {
     </div>
     </div>
         </div>
-        
+
 
         </div>
         <div className='login-illustration'>
@@ -121,4 +139,3 @@ function Login() {
 }
 
 export default Login
-
