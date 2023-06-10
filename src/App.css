@@ -1,7 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('https://cdn.syncfusion.com/ej2/material.css');
 .login-container{
   display: flex;
   
@@ -10,19 +10,23 @@
   width:50%;
   height: 100vh;
   background-color: #fb9300; 
+  background: radial-gradient(905px at 4.9% 85.8%, rgb(255, 243, 242) 0.1%, rgb(255, 247, 220) 57.6%);
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
 }
-.login-illustration p{
+.login-illustration-section{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
   text-decoration: underline;
 }
+
 .login-content{
   width:50%;
   height: 100vh;
-  background-color: #fbce11; 
+  /* background-color: #fbce11;  */
   display: flex;
   flex-direction: column;
   
@@ -35,9 +39,28 @@
   background-color: #f4ca25;
   box-shadow: 0px 10px 23px -5px rgba(158,158,146,0.5);
 }
-.login-content p img{
+.login-title p img{
   display: inline;
-  
+}
+.login-title p{
+  padding: 4vh 5vw ;
+  font-size: 25px;
+  color: #dd590d;
+  font-weight: 700;
+}
+.login-title p img{
+  margin: 0px 6px;
+}
+.login-tagline {
+  color: #3b1601;
+  font-size: 35px;
+  font-weight: 500;
+}
+.login-tagline{
+  margin-left: 2em;
+} 
+.login-tagline-second span{
+  color: #dd590d; 
 }
 .login-part{
   width: 100%;
@@ -338,4 +361,57 @@ input[type="submit"]:hover {
   padding: 7px;
   border: 1px solid #7f53ac; 
   border-radius: 10px;
+}
+@import url('https://cdn.syncfusion.com/ej2/material.css');
+
+.sidebar {
+  box-shadow: rgb(113 122 131 / 11%) 0px 7px 30px 0px;
+}
+.nav-item,
+.navbar {
+  z-index: 10000;
+}
+@media  screen and (max-width:800px) {
+  .sidebar{
+    z-index: 10000000;
+  }
+}
+
+.e-dlg-center-center, .e-quick-popup-wrapper.e-device{
+  z-index: 1000000 !important;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: rgb(216, 216, 216);
+  border-radius: 40px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* color-picker style  */
+
+ #preview {
+  background: transparent
+    url('https://ej2.syncfusion.com/react/demos/src/color-picker/images/pen.png')
+    no-repeat;
+  display: inline-block;
+  height: 80px;
+  margin: 10px 0;
+  min-width: 300px;
+  max-width: 600px;
+  background-color: #008000;
+}
+
+.e-input-group:not(.e-float-icon-left), .e-input-group.e-success:not(.e-float-icon-left), .e-input-group.e-warning:not(.e-float-icon-left), .e-input-group.e-error:not(.e-float-icon-left), .e-input-group.e-control-wrapper:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-success:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-warning:not(.e-float-icon-left), .e-input-group.e-control-wrapper.e-error:not(.e-float-icon-left){
+  border: none;
+}
+
+.settings-btn{
+  position: fixed;
+ 
+  z-index: 1000;
 }
