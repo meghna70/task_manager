@@ -10,6 +10,8 @@ import avatar from '../data/avatar.jpg';
 import {Notification,UserProfile} from '.';
 import { useStateContext } from '../contexts/ContextProvider';
 import Kanban from '../pages/Kanban';
+
+
 const NavButton=({title,customFunc,icon,color,dotColor})=>(
 <TooltipComponent content={title} position="BottomCenter">
 <button type="button" onClick={customFunc} style={{color}} 
@@ -42,30 +44,31 @@ const Navbar = () => {
     setActiveMenu(!activeMenu);
   }
   return (
-    <div className=" ">
-    <div className="">
+    <div className="Navbar-container">
+
+    <div className="Navbar-left">
       <NavButton title="Menu" customFunc={handleActiveMenu}
       color={currentColour} icon={<AiOutlineMenu/>}/>
-      <div className=''>
-      
+      </div>
+
+      <div className='Navbar-right'>
      
-      <NavButton title="Notification" dotColor="#03c9d7" customFunc={()=>handleClick('notification')}
-      color={currentColour} icon={<RiNotification3Line/>}
-      />
-      <TooltipComponent content="Profile" position='Bottom Center'>
-        <div className=""
-        
+      <NavButton title="Notification" 
+                 dotColor="#03c9d7" 
+                 customFunc={()=>handleClick('notification')}
+                 color={currentColour} icon={<RiNotification3Line/>}/>
+
+     
+        <div className="Navbar-profile"
           onClick={()=>handleClick('userProfile')}>
-            <img className="" src={avatar}/>
-            <MdKeyboardArrowDown className=''/>
+            <img className="" src={avatar} height={35} width={35}/>
+           
         </div>
-      </TooltipComponent>
-      {isClicked.chat && (<Kanban/>)}
       {isClicked.Notification &&(<Notification/>)}
       {isClicked.userProfile &&(<UserProfile/>)}
       </div>
       </div>
-      </div>
+     
   );
 };
 

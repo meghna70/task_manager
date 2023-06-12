@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import{Client,Account} from 'appwrite';
 
-function Login() {
+function Login({handleLogin}) {
   const navigate= useNavigate();
   const [errorMessages, setErrorMessages] = useState({})
   let client = new Client();
@@ -36,10 +36,12 @@ function Login() {
       setLoggedIn(true);
       navigate('/profile');
       console.log(promise)
+      handleLogin(true)
     }catch(err){
       console.log(err)
       navigate('/profile'); //for testing purposes, remove when appwrite works
       setErrorMessages({ message:"Invalid Credentials" });
+      handleLogin(true)//change this to false after testing phase over 
     }
   }
 
