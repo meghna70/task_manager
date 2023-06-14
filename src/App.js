@@ -59,7 +59,7 @@ const MainLayout = ({ children }) => {
 const App = () => {
   const { currentMode, setCurrentColour, setCurrentMode } = useStateContext();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [user,setUser]=useState({});
   useEffect(() => {
     const currentThemeColour = localStorage.getItem('colourMode');
     const currentThemeMode = localStorage.getItem('themeMode');
@@ -72,7 +72,10 @@ const App = () => {
   const handleLogin = (e) => {
     setIsLoggedIn(e);
   };
-
+  const handleUser =(e)=>{
+    setUser(e);
+    console.log("user inside appjs"+user)
+  }
   useEffect(() => {
     console.log('islogged:', isLoggedIn);
   }, []);
@@ -87,8 +90,8 @@ const App = () => {
               isLoggedIn ? (
                 <MainLayout>
                   <Routes>
-                  <Route index element={<Dashboard />} />
-                  <Route path="/dashboard"element={<Dashboard />} />
+                  <Route index element={<Dashboard user="Haley" />} />
+                  <Route path="/dashboard"element={<Dashboard user="Haley"/>} />
                   <Route path="/projects" element={<Projects />} />
                   <Route path="/users" element={<Users />} />
                   <Route path="/calender" element={<Calendar />} />
@@ -107,7 +110,7 @@ const App = () => {
               isLoggedIn ? (
                 <Navigate to="/" replace />
               ) : (
-                <Login handleLogin={handleLogin} />
+                <Login handleLogin={handleLogin} handleUser={handleUser}/>
               )
             }
           />

@@ -31,12 +31,14 @@ const Sidebar = () => {
             </button>
             </TooltipComponent>
           </div>
-          <div className="mt-10">
+          <div className="sidebar-option mt-10">
              {links.map((item)=>(
                <div key={item.title}>
-                <NavLink to={`/${item.title.toLowerCase()}`}
-                  style={({isActive})=>({ backgroundColor:isActive? currentColour :''
-                               })}>
+                <NavLink className="sidebar-link" to={`/${item.title.toLowerCase()}`}
+                 style={({ isActive }) => ({
+                  color: isActive ? currentColour : '',
+                  borderLeft: isActive ? '10px solid rgba(208, 206, 208, 0.7)' : 'none'
+                })}>
                   {item.title}
                   
                 </NavLink>

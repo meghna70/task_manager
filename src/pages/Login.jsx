@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock } from '@fortawesome/free-solid-svg-icons';
 import{Client,Account} from 'appwrite';
 
-function Login({handleLogin}) {
+function Login({handleLogin},{handleUser}) {
   const navigate= useNavigate();
   const [errorMessages, setErrorMessages] = useState({})
   let client = new Client();
@@ -35,13 +35,14 @@ function Login({handleLogin}) {
      let promise=await accounts.createEmailSession(email,password);
       setLoggedIn(true);
       navigate('/profile');
-      console.log(promise)
+      console.log("promise:"+JSON.stringify(promise))
       handleLogin(true)
+      // handleUser(JSON.stringify(promise))
     }catch(err){
       console.log(err)
       navigate('/profile'); //for testing purposes, remove when appwrite works
       setErrorMessages({ message:"Invalid Credentials" });
-      handleLogin(true)//change this to false after testing phase over 
+      handleLogin(false)//change this to false after testing phase over 
     }
   }
 
