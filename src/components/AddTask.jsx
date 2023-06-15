@@ -1,15 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState, useSyncExternalStore } from 'react'
 import { faCirclePlus,faClose } from '@fortawesome/free-solid-svg-icons'
+import {Client,Databases,ID} from 'appwrite';
+function AddTask(props) {
 
-function AddTask() {
+  const client=new Client();
+  client.setEndpoint('https://cloud.appwrite.io/v1').setProject(process.env.REACT_APP_APPWRITE_PROJID);
+  const database=new Databases(client);
   const [show,setShow]=useState(false)
   const[card, setCard]=useState({
+                        $id:"",
                         card_id:"",
                         card_name:"",
                         deadline:"",
                         priority:"",
-                        attachment:[],
+                        attachments:[],
                         participants:[],
                         comments:[]
                         })
@@ -29,31 +34,44 @@ function AddTask() {
     })
   }
 
+
+
   // useEffect(()=>{
-  //     axios.get("")
-  //           .then(res=>{
-  //             setCard(res.data)
-  //           })
-  //           .catch(error=>{
-  //             console.log(error)
-  //           })
-  // },[])
+  //         const filtered = card.participants.filter(participant=>{
+  //           participant.name.toLowerCase().include(searchParticipant.toLowerCase())
+  //         })
+  //         setFilteredParticipant(filtered)
+  // },[searchParticipant,card.participants])    
 
-  useEffect(()=>{
-          const filtered = card.participants.filter(participant=>{
-            participant.name.toLowerCase().include(searchParticipant.toLowerCase())
-          })
-          setFilteredParticipant(filtered)
-  },[searchParticipant,card.participants])    
+  // const handleSearch=(event)=>{
+  //   setSearchparticipant(event.target.value)
+  // }
 
-  const handleSearch=(event)=>{
-    setSearchparticipant(event.target.value)
+  // const handleMemberSelect=(participant)=>{
+  //   setSelectedParticipant(participant)
+  // }
+const handleSubmit=async(event)=>{
+  event.preventDefault();
+  
+  try{
+    const promise=await fetch(`https://taskhive-0r79.onrender.com/createCard`,{
+      method  :'POST',
+      headers:{
+        'Content-Type':'application/json'
+    },
+    body:JSON.stringify({
+        "card_id":card.card_id,
+        "name":card.card_name,
+        "board_id":props.boardId,
+        "card_ids":[],
+    })
+    }
+    )
+
+  }catch(error){
+    console.log(error)
   }
-
-  const handleMemberSelect=(participant)=>{
-    setSelectedParticipant(participant)
-  }
-
+}
 
   return (
     <div className='add-task'>
@@ -116,6 +134,19 @@ function AddTask() {
                             </div>
                     </div>
                     <div className='task-section'>
+                        <label htmlFor="priority">Priority</label>
+                            <div>
+                            <input type="datetime-local"
+                                  id="deadline"
+                                  className="addtask-inputs"
+                                  value={card.deadline}
+                                  onChange={handleChange}
+                                  name="deadline"
+                                    >
+                              </input>
+                            </div>
+                    </div>
+                    {/* <div className='task-section'>
                           <div>
                              <h3>Selected Participants:</h3>
                                 {selectedParticipant.map(participant=>(
@@ -135,24 +166,17 @@ function AddTask() {
                                   </li>
                                 ))}
                               </ul>
-                      </div>
+                      </div> */}
                       <div className='task-section'>
                           <div>
                              <h3>Upload attachments</h3>
                           </div>
                         <input type="file" 
-                                value={searchParticipant}
-                                id="participants"
+                                value={card.attachments}
+                                id="attachments"
                                 className="addtask-inputs"
-                                onChange={handleSearch}  
+                                onChange={handleChange}
                                 placeholder='select participants'/>
-                              <ul>
-                                {filteredParticipant.map(participant=>(
-                                  <li key={participant.id} onClick={()=> handleMemberSelect(participant)}>
-                                    {participant.name}
-                                  </li>
-                                ))}
-                              </ul>
                       </div>
                     </div>
            
@@ -169,7 +193,7 @@ function AddTask() {
                     <button
                       className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                       type="button"
-                      onClick={() => setShow(false)}
+                      onClick={handleSubmit}
                     >
                       Save Changes
                     </button>

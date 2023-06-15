@@ -2,7 +2,9 @@ import React from 'react'
 import { useState } from 'react'
 import { faClose,faCirclePlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import{ID} from 'appwrite';
 function AddBoard(props) {
+  const proj_id="6487dcefdf581387f277"
     const [isAdd, setAdd]=useState(false)
     const[boardName, setBoardName]=useState("")
     const handletoggle=()=> {
@@ -12,16 +14,17 @@ function AddBoard(props) {
       setBoardName(e.target.value);
     };
 
-    const handleSubmit = (event) => {
-      const newBoard = {
-        id:Date.now()+Math.random()*2,
-        name: boardName,
-        color:"#ce7ddc",
-        cards:[]
-            
-      };
+    const handleSubmit = async(event) => {
+      // const newBoard = {
+      //   id:Date.now()+Math.random()*2,
+      //   name: boardName,
+      //   color:"#ce7ddc",
+      //   cards:[]
+           
+      // };
       event.preventDefault();
-      props.addBoard(boardName);
+      
+      props.addBoard(boardName,proj_id);
       setAdd(false);
       setBoardName('');
     };

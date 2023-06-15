@@ -8,8 +8,11 @@ import ViewCard from './ViewCard'
 
 function Card(props) {
     var card_name=props.card_name
+    
     const [isHover, setHover]= useState(null)
     const [show, setShow] = useState(false)
+
+
     const handleMouseOn=(member)=>{
         setHover(member)
     }
